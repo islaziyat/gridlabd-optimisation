@@ -11,7 +11,7 @@
 function [V,Theta,fail, buses] = solve_loadflow(x1,x2,x3,x4,x5,x6,x7,x8,x9)
     fail = 0;
     j = sqrt(-1);
-    m=load('ieee37_load.m');
+    m = ieee37_loads();
     l = ieee37_lines();
 
     lines=length(l(:,1));

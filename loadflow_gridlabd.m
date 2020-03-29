@@ -4,9 +4,9 @@ global complex_grid
     buses=37;
     fail = 0;
     
-    variables_DG1 = strcat(' --define DG1_location=',num2str(x1),' --define DG1_size=', num2str(x4*1000));
-    variables_DG2 = strcat(' --define DG2_location=',num2str(x2),' --define DG2_size=', num2str(x5*1000));
-    variables_DG3 = strcat(' --define DG3_location=',num2str(x3),' --define DG3_size=', num2str(x6*1000));
+    variables_DG1 = strcat(' --define DG1_location=',num2str(ceil(x1)),' --define DG1_size=', num2str(x4*1000));
+    variables_DG2 = strcat(' --define DG2_location=',num2str(ceil(x2)),' --define DG2_size=', num2str(x5*1000));
+    variables_DG3 = strcat(' --define DG3_location=',num2str(ceil(x3)),' --define DG3_size=', num2str(x6*1000));
 
     file = ' IEEE37/IEEE37_symmetric_balanced';
     if complex_grid == 1
@@ -16,7 +16,7 @@ global complex_grid
     % for Windows OS
     s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
      % for Mac OS
-    s = strcat('\usr\local\gridlabd\bin',variables_DG1,variables_DG2,variables_DG3, file);
+%     s = strcat('\usr\local\gridlabd\bin',variables_DG1,variables_DG2,variables_DG3, file);
     [status,cmdout] = system(s);
     if status == 1
         cmdout
