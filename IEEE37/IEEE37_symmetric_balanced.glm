@@ -12,7 +12,7 @@
 
 clock {
 	timestamp '2000-01-01 0:00:00';
-	stoptime '2000-01-01 0:02:00';
+	stoptime '2000-01-01 0:00:01';
 	timezone EST+5EDT;
 }
 
@@ -1038,6 +1038,14 @@ object impedance_dump {
         filename impedance.csv;
         }
 
+
+object collector {
+     group "class=underground_line";
+     property sum(power_losses_A.real),sum(power_losses_B.real),sum(power_losses_C.real);
+     interval 1;
+     file underground_line_losses.csv;
+}
+	
 
 
 

@@ -14,9 +14,9 @@ global complex_grid
     end
 
     % for Windows OS
-    s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
+%     s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
      % for Mac OS
-%     s = strcat('\usr\local\gridlabd\bin',variables_DG1,variables_DG2,variables_DG3, file);
+    s = strcat('/usr/local/bin/gridlabd',variables_DG1,variables_DG2,variables_DG3, file)
     [status,cmdout] = system(s);
     if status == 1
         cmdout
@@ -26,7 +26,7 @@ global complex_grid
         return;
     end
 
-    Vout = data_analysis('output_voltage.csv');
+    Vout = read_voltage_csv('output_voltage.csv');
     V = Vout(1:37,1);
     if complex_grid == 1
         V = [Vout(1:37,1);Vout(1:37,2); Vout(1:37,3)];
