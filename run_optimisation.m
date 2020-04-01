@@ -31,9 +31,9 @@ end
 % % Optimisation Tools:
 %Setting for all
 ObjectiveFunction = @objective;
-nvars = 6; % Number of variables
-LB = [2 2 2 0 0 0]; % Lower bound
-UB = [36 36 36 1000 1000 1000]; % Upper bound
+nvars = 9; % Number of variables
+LB = [2 2 2 0 0 0 -500 -500 -500]; % Lower bound
+UB = [36 36 36 1000 1000 1000 500 500 500]; % Upper bound
 
 % % GA solved
 IntCon = [1 2 3];
@@ -56,11 +56,15 @@ end
 
 % ---------------------------------------------------------------------------------------------
 % % Optimisation Outputs
-[V,Theta,fail, buses] = loadflow_gridlabd(2,3,4,0,0,0);
+if gridlabd
+    [V,Imag,Psubstation,fail, buses]  = loadflow_gridlabd(2,3,4,0,0,0);
+    [Vout,Imag,Psubstation,fail, buses] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6));
+else
+    [V,Psubstation,Y,fail, buses] = solve_loadflow(2,2,2,0,0,0,0,0,0);
+    [Vout,Psubstation,Y,fail, buses] = solve_loadflow(x(1),x(2),x(3),x(4),x(5),x(6),x(7),x(8),x(9));
+end
 disp('Total voltage deviation with no DG is:')
 y = voltage_deviation(V)
-
-[Vout,Theta,fail, buses] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6));
 disp('After optimisation delta_V is:')
 y = voltage_deviation(Vout)
 disp('x is:');
@@ -71,17 +75,19 @@ x
 % ---------------------------------------------------------------------------------------------
 % % Performance indeces
 
-% Power loss in lines
-[V,Theta,fail, buses] = loadflow_gridlabd(2,3,4,0,0,0);
-disp('Power loss in lines with no DG is:')
-ploss1 = read_power_csv('underground_line_losses.csv')
+if gridlabd
+    % Power loss in lines
+    [V,Theta,fail, buses] = loadflow_gridlabd(2,3,4,0,0,0);
+    disp('Power loss in lines with no DG is:')
+    ploss1 = read_power_csv('underground_line_losses.csv');
 
-[V,Theta,fail, buses] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6));
-disp('Power loss in lines is:');
-ploss2 = read_power_csv('underground_line_losses.csv')
+    [V,Theta,fail, buses] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6));
+    disp('Power loss in lines is:');
+    ploss2 = read_power_csv('underground_line_losses.csv');
 
-disp('Percentage decrease in power loss:')
-100*(ploss2-ploss1)/ploss1
+    disp('Percentage decrease in power loss:')
+    100*(ploss2-ploss1)/ploss1
+end
 
 % Voltage stability index
 

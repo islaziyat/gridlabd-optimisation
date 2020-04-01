@@ -9,15 +9,19 @@ global complex_grid
     variables_DG2 = strcat(' --define DG2_location=',num2str(ceil(x2)),' --define DG2_size=', num2str(x5*1000));
     variables_DG3 = strcat(' --define DG3_location=',num2str(ceil(x3)),' --define DG3_size=', num2str(x6*1000));
 
-    file = ' IEEE37/IEEE37_symmetric_balanced';
+    
     if complex_grid == 1
         file = ' IEEE37/IEEE37_real_no_regulator';
+    else
+        file = ' IEEE37/IEEE37_symmetric_balanced';
     end
-
-    % for Windows OS
-%     s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
-     % for Mac OS
-    s = strcat('/usr/local/bin/gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
+ 
+    if ismac % for Mac OS
+        s = strcat('/usr/local/bin/gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
+    elseif ispc % for Windows 
+        s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
+    end
+    
     [status,cmdout] = system(s);
     if status == 1
         cmdout
@@ -29,10 +33,9 @@ global complex_grid
 
     % IMPORT DATA FROM SIMULATION
     [V, VPU] = read_voltage_csv('output_voltage.csv');
-
     [I,Imag] = read_current_csv('output_current.csv');
 
-    % At slack bus
+    % At power slack bus
     Psubstation = conj(I(1,:)').*V(1,:)';
     
     if complex_grid == 1

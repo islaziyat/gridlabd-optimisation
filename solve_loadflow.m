@@ -8,7 +8,7 @@
 % x(4),x(5),x(6) is real power of solar pv in kW
 % x(7),x(8),x(9) is reactive power of solar pv in kW
 
-function [V,Theta,Y,fail, buses] = solve_loadflow(x1,x2,x3,x4,x5,x6,x7,x8,x9)
+function [V,Psubstation,Y,fail, buses] = solve_loadflow(x1,x2,x3,x4,x5,x6,x7,x8,x9)
     fail = 0;
     j = sqrt(-1);
     m = ieee37_loads();
@@ -120,6 +120,9 @@ function [V,Theta,Y,fail, buses] = solve_loadflow(x1,x2,x3,x4,x5,x6,x7,x8,x9)
         fail = 1;
         return;
     end
+    
+    P = real(voltage.*conj(I));
+    Psubstation = P(1);
 %     fprintf('Newton raphson converged after %i interations\n', iter);
 %     fprintf('Solution we converged to:\n');
 %     V
