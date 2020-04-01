@@ -1,5 +1,5 @@
 function y = objective(x)
-global gridlabd
+global gridlabd multi
 % x(1),x(2),x(3) is location of solar pv
 % x(4),x(5),x(6) is real power of solar pv in kW
 % x(7),x(8),x(9) is reactive power of solar pv in kW
@@ -13,15 +13,24 @@ if gridlabd == 0
     end
 else
     % Using gridlabd (one line model with newton raphson)
-    [V,fail, buses] = loadflow_gridlabd(ceil(x(1)),ceil(x(2)),ceil(x(3)),x(4),x(5),x(6));
+    [V,Imag,Theta,fail, buses] = loadflow_gridlabd(ceil(x(1)),ceil(x(2)),ceil(x(3)),x(4),x(5),x(6));
     if fail == 1
         disp('Loadflow failed in gridlabd');
         return;
     end
 end
 
-Vpu = ones(length(V),1);
-delta_V = abs(V-Vpu);
-y = sum(delta_V)
+if multi == 0 % single objective
+    Vpu = ones(length(V),1);
+    delta_V = abs(V-Vpu);
+    y = sum(delta_V);
+else % multi objective
+    % Minimise voltage deviation
+    Vpu = ones(length(V),1);
+    delta_V = abs(V-Vpu);
+    y(1) = sum(delta_V);
+    % Minimise power loss
+    y(2) = read_power_csv('underground_line_losses.csv');
+end
 
 end

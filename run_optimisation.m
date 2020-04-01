@@ -1,23 +1,29 @@
 clear all;
-global complex_grid gridlabd
+global complex_grid gridlabd IEEE37 multi
+
+IEEE37 = 1;
+% Multiple objective function or single?
+multi = 0;
 
 % ---------------------------------------------------------------------------------------------
 % % Use gridlabd or MATLAB model?
 gridlabd = 0;
-answer = questdlg('Use gridlabd? (default is MATLAB one-line diagram)', ...
-	'Type of model', 'Yes', 'No', 'No');
+answer = questdlg('Use gridlabd? (otherwise MATLAB one-line diagram)', ...
+	'Type of model', 'Yes', 'No', 'Yes');
 if strcmp(answer,'Yes')==1 %Otherwise full 3 phase, untransposed, unbalanced model is used in gridlabd
     gridlabd = 1;
+    disp('Using gridlabd');
 end
 
 % ---------------------------------------------------------------------------------------------
 % % Use one line diagram or detailed 3-phase gridlabd model?
 if gridlabd == 1
     complex_grid = 0;
-    answer = questdlg('Is this grid a one-line model? (default is 3-phase model)', ...
-        'Type of grid', 'Yes', 'No', 'No');
-    if strcmp(answer,'No')==1 %Otherwise full 3 phase, untransposed, unbalanced model is used in gridlabd
+    answer = questdlg('Use 3-phase model? (otherwise one-line diagram)', ...
+        'Type of grid', 'Yes', 'No', 'Yes');
+    if strcmp(answer,'Yes')==1 %Otherwise full 3 phase, untransposed, unbalanced model is used in gridlabd
         complex_grid = 1;
+         disp('Using 3-phase model');
     end
 end
 
@@ -25,17 +31,23 @@ end
 % % Optimisation Tools:
 %Setting for all
 ObjectiveFunction = @objective;
-nvars = 9; % Number of variables
-LB = [2 2 2 0 0 0 -500 -500 -500]; % Lower bound
-UB = [36 36 36 1000 1000 1000 500 500 500]; % Upper bound
+nvars = 6; % Number of variables
+LB = [2 2 2 0 0 0]; % Lower bound
+UB = [36 36 36 1000 1000 1000]; % Upper bound
 
 % % GA solved
 IntCon = [1 2 3];
-options = optimoptions('ga');
-options.MaxGenerations = 10;
-% [x,fval, exitflag, output] = ga(ObjectiveFunction,nvars,[],[],[],[],LB,UB,@nonlinear_constraint,IntCon,options);
-[x,fval, exitflag, output] = ga(ObjectiveFunction,nvars,[],[],[],[],LB,UB,[],IntCon,options);
 
+if multi == 0 %single objective
+    options = optimoptions('ga');
+    options.MaxGenerations = 10;
+    [x,fval, exitflag, output] = ga(ObjectiveFunction,nvars,[],[],[],[],LB,UB,@nonlinear_constraint,IntCon,options);
+else %multiple objectives
+    options = optimoptions('gamultiobj');
+    options.MaxGenerations = 10;
+    options.PlotFcn = @gaplotpareto;
+    [x,fval, exitflag, output] = gamultiobj(ObjectiveFunction,nvars,[],[],[],[],LB,UB,@nonlinear_constraint,options);
+end
 
 % % Particle swarm
 % options = optimoptions('particleswarm');
@@ -45,20 +57,31 @@ options.MaxGenerations = 10;
 % ---------------------------------------------------------------------------------------------
 % % Optimisation Outputs
 [V,Theta,fail, buses] = loadflow_gridlabd(2,3,4,0,0,0);
-Vpu = ones(length(V),1);
-delta_V = abs(V-Vpu);
-disp('Initially delta_V is:')
-y = sum(delta_V)
+disp('Total voltage deviation with no DG is:')
+y = voltage_deviation(V)
+
+[Vout,Theta,fail, buses] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6));
 disp('After optimisation delta_V is:')
-fval
+y = voltage_deviation(Vout)
 disp('x is:');
 x
+
 
 
 % ---------------------------------------------------------------------------------------------
 % % Performance indeces
 
 % Power loss in lines
+[V,Theta,fail, buses] = loadflow_gridlabd(2,3,4,0,0,0);
+disp('Power loss in lines with no DG is:')
+ploss1 = read_power_csv('underground_line_losses.csv')
+
+[V,Theta,fail, buses] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6));
+disp('Power loss in lines is:');
+ploss2 = read_power_csv('underground_line_losses.csv')
+
+disp('Percentage decrease in power loss:')
+100*(ploss2-ploss1)/ploss1
 
 % Voltage stability index
 

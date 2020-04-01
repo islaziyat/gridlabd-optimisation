@@ -138,6 +138,14 @@ object line_configuration {
 }
 
 //// create lineobjects:
+object underground_line {
+	 phases "ABC";
+	 name node781-701;
+	 from node111;
+	 to node2;
+	 length 1850;
+	 configuration lc_7211;
+}
 
 object underground_line {
 	 phases "ABC";
@@ -443,16 +451,6 @@ object underground_line {
 	 to node21;
 	 length 200;
 	 configuration lc_7241;
-}
-
-
-object underground_line {
-	 phases "ABC";
-	 name node781-701;
-	 from node111;
-	 to node2;
-	 length 1850;
-	 configuration lc_7211;
 }
 
 object underground_line {
@@ -1028,6 +1026,17 @@ object voltdump {
 object impedance_dump {
         filename impedance.csv;
         } 
+
+object currdump {
+filename output_current.csv;
+}
+
+object collector {
+	group "class=underground_line";
+	property sum(power_losses_A.real),sum(power_losses_B.real),sum(power_losses_C.real);
+	interval 1;
+	file underground_line_losses.csv;
+} 
 
 
 

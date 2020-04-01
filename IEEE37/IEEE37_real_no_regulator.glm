@@ -12,7 +12,7 @@
 
 clock {
 	timestamp '2000-01-01 0:00:00';
-	stoptime '2000-01-01 0:02:00';
+	stoptime '2000-01-01 0:00:02';
 	timezone EST+5EDT;
 }
 
@@ -22,7 +22,7 @@ module powerflow {
 
 module tape;
 
-// Phase Conductor for 721: 1,000,000 AA,CN
+// Phase Conductor for 721: 1,000,000 AA,CN - MAX 698 A
 object underground_line_conductor { 
 	 name ug_lc_7210;
 	 outer_diameter 1.980000;
@@ -37,7 +37,7 @@ object underground_line_conductor {
 	 shield_resistance 0.000000;
 }
 
-// Phase Conductor for 722: 500,000 AA,CN
+// Phase Conductor for 722: 500,000 AA,CN - MAX 483 A
 object underground_line_conductor { 
 	 name ug_lc_7220;
 	 outer_diameter 1.560000;
@@ -52,7 +52,7 @@ object underground_line_conductor {
 	 shield_resistance 0.000000;
 }
 
-// Phase Conductor for 723: 2/0 AA,CN
+// Phase Conductor for 723: 2/0 AA,CN - MAX 230 A
 object underground_line_conductor { 
 	 name ug_lc_7230;
 	 outer_diameter 1.100000;
@@ -67,7 +67,7 @@ object underground_line_conductor {
 	 shield_resistance 0.000000;
 }
 
-// Phase Conductor for 724: //2 AA,CN
+// Phase Conductor for 724: //2 AA,CN  - MAX 156 A
 object underground_line_conductor { 
 	 name ug_lc_7240;
 	 outer_diameter 0.980000;
@@ -105,7 +105,7 @@ object line_spacing {
 }
 
 //line configurations:
-object line_configuration {
+object line_configuration { // - MAX 698 A
 	 name lc_7211;
 	 conductor_A ug_lc_7210;
 	 conductor_B ug_lc_7210;
@@ -113,7 +113,7 @@ object line_configuration {
 	 spacing spacing_515;
 }
 
-object line_configuration {
+object line_configuration { // - MAX 483 A
 	 name lc_7221;
 	 conductor_A ug_lc_7220;
 	 conductor_B ug_lc_7220;
@@ -121,7 +121,7 @@ object line_configuration {
 	 spacing spacing_515;
 }
 
-object line_configuration {
+object line_configuration { // - MAX 230 A
 	 name lc_7231;
 	 conductor_A ug_lc_7230;
 	 conductor_B ug_lc_7230;
@@ -129,7 +129,7 @@ object line_configuration {
 	 spacing spacing_515;
 }
 
-object line_configuration {
+object line_configuration { // - MAX 156 A
 	 name lc_7241;
 	 conductor_A ug_lc_7240;
 	 conductor_B ug_lc_7240;
@@ -137,7 +137,16 @@ object line_configuration {
 	 spacing spacing_515;
 }
 
-//// create lineobjects:
+//// create lineobjects: THE ORDER SHOULD NOT BE CHANGED - important in MATLAB
+
+object underground_line { // - 698 A
+	 phases "ABC";
+	 name node799-701;
+	 from node1;
+	 to node2;
+	 length 1850;
+	 configuration lc_7211;
+}
 
 object underground_line {
 	 phases "ABC";
@@ -446,22 +455,13 @@ object underground_line {
 }
 
 
-object underground_line {
-	 phases "ABC";
-	 name node799-701;
-	 from node1;
-	 to node2;
-	 length 1850;
-	 configuration lc_7211;
-}
-
-object underground_line {
+object underground_line { // 
 	 phases "ABC";
 	 name node709-775;
 	 from node23;
 	 to node25;
 	 length 520;
-	 configuration lc_7211;
+	 configuration lc_7241;
 }
 
 
@@ -968,9 +968,21 @@ object voltdump {
        filename output_voltage.csv;
        }
 
+object currdump {
+filename output_current.csv;
+}
+
 object impedance_dump {
         filename impedance.csv;
         } 
+
+object collector {
+	group "class=underground_line";
+	property sum(power_losses_A.real),sum(power_losses_B.real),sum(power_losses_C.real);
+	interval 1;
+	file underground_line_losses.csv;
+}
+	
 
 
 

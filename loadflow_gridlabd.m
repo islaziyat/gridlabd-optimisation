@@ -1,6 +1,7 @@
 %%insert the generators as negative loads
-function [V,Theta,fail, buses] = loadflow_gridlabd(x1, x2, x3, x4, x5, x6)
+function [Vmag,Imag,Psubstation,fail, buses] = loadflow_gridlabd(x1, x2, x3, x4, x5, x6)
 global complex_grid
+    
     buses=37;
     fail = 0;
     
@@ -16,7 +17,7 @@ global complex_grid
     % for Windows OS
 %     s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
      % for Mac OS
-    s = strcat('/usr/local/bin/gridlabd',variables_DG1,variables_DG2,variables_DG3, file)
+    s = strcat('/usr/local/bin/gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
     [status,cmdout] = system(s);
     if status == 1
         cmdout
@@ -26,12 +27,21 @@ global complex_grid
         return;
     end
 
-    Vout = read_voltage_csv('output_voltage.csv');
-    V = Vout(1:37,1);
-    if complex_grid == 1
-        V = [Vout(1:37,1);Vout(1:37,2); Vout(1:37,3)];
-    end
+    % IMPORT DATA FROM SIMULATION
+    [V, VPU] = read_voltage_csv('output_voltage.csv');
 
-    Theta = [];
-   
+    [I,Imag] = read_current_csv('output_current.csv');
+
+    % At slack bus
+    Psubstation = conj(I(1,:)').*V(1,:)';
+    
+    if complex_grid == 1
+        Vmag = [VPU(1:37,1);VPU(1:37,2); VPU(1:37,3)];
+        Imag = [Imag(1:length(Imag),1);Imag(1:length(Imag),2); Imag(1:length(Imag),3)];
+    else % symmetrical grid
+        Vmag = VPU(:,1);
+        Imag = Imag(:,1);
+    end
+        
+    
 end
