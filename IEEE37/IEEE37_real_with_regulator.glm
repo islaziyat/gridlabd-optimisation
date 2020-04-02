@@ -992,9 +992,9 @@ object load {
 	 phases "ABCD";
 	 parent node${DG1_location};
 	 name DG1;
- 	 constant_power_A -${DG1_size}+0.0j;
-	 constant_power_B -${DG1_size}+0.0j;
-	 constant_power_C -${DG1_size}+0.0j;
+ 	 constant_power_A -${DG1_size}j;
+	 constant_power_B -${DG1_size}j;
+	 constant_power_C -${DG1_size}j;
 	 nominal_voltage 4800;
 }
 
@@ -1002,9 +1002,9 @@ object load {
 	 phases "ABCD";
 	 parent node${DG2_location};
 	 name DG2;
- 	 constant_power_A -${DG2_size}+0.0j;
-	 constant_power_B -${DG2_size}+0.0j;
-	 constant_power_C -${DG2_size}+0.0j;
+ 	 constant_power_A -${DG2_size}j;
+	 constant_power_B -${DG2_size}j;
+	 constant_power_C -${DG2_size}j;
 	 nominal_voltage 4800;
 }
 
@@ -1012,9 +1012,9 @@ object load {
 	 phases "ABCD";
 	 parent node${DG3_location};
 	 name DG3;
- 	 constant_power_A -${DG3_size}+0.0j;
-	 constant_power_B -${DG3_size}+0.0j;
-	 constant_power_C -${DG3_size}+0.0j;
+ 	 constant_power_A -${DG3_size}j;
+	 constant_power_B -${DG3_size}j;
+	 constant_power_C -${DG3_size}j;
 	 nominal_voltage 4800;
 }
 

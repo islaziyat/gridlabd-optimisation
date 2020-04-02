@@ -13,6 +13,8 @@ answer = questdlg('Use gridlabd? (otherwise MATLAB one-line diagram)', ...
 if strcmp(answer,'Yes')==1 %Otherwise full 3 phase, untransposed, unbalanced model is used in gridlabd
     gridlabd = 1;
     disp('Using gridlabd');
+else
+    disp('Using MATLAB one line diagram');
 end
 
 % ---------------------------------------------------------------------------------------------
@@ -23,7 +25,9 @@ if gridlabd == 1
         'Type of grid', 'Yes', 'No', 'Yes');
     if strcmp(answer,'Yes')==1 %Otherwise full 3 phase, untransposed, unbalanced model is used in gridlabd
         complex_grid = 1;
-         disp('Using 3-phase model');
+        disp('Using 3-phase model');
+    else
+        disp('Using 3-phase balanced + transposable lines');
     end
 end
 
@@ -57,36 +61,28 @@ end
 % ---------------------------------------------------------------------------------------------
 % % Optimisation Outputs
 if gridlabd
-    [V,Imag,Psubstation,fail, buses]  = loadflow_gridlabd(2,3,4,0,0,0);
-    [Vout,Imag,Psubstation,fail, buses] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6));
+    [Vinit,Imag,Psubstation,fail]  = loadflow_gridlabd(2,3,4,0,0,0,0,0,0);
+    ploss1 = read_power_csv('underground_line_losses.csv');
+
+    [Vout,Imag,Psubstation,fail] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6),x(7),x(8),x(9));
+    ploss2 = read_power_csv('underground_line_losses.csv');
 else
     [V,Psubstation,Y,fail, buses] = solve_loadflow(2,2,2,0,0,0,0,0,0);
     [Vout,Psubstation,Y,fail, buses] = solve_loadflow(x(1),x(2),x(3),x(4),x(5),x(6),x(7),x(8),x(9));
 end
 disp('Total voltage deviation with no DG is:')
-y = voltage_deviation(V)
+y = voltage_deviation(Vinit)
 disp('After optimisation delta_V is:')
 y = voltage_deviation(Vout)
 disp('x is:');
 x
 
-
-
 % ---------------------------------------------------------------------------------------------
 % % Performance indeces
 
 if gridlabd
-    % Power loss in lines
-    [V,Theta,fail, buses] = loadflow_gridlabd(2,3,4,0,0,0);
-    disp('Power loss in lines with no DG is:')
-    ploss1 = read_power_csv('underground_line_losses.csv');
-
-    [V,Theta,fail, buses] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6));
-    disp('Power loss in lines is:');
-    ploss2 = read_power_csv('underground_line_losses.csv');
-
     disp('Percentage decrease in power loss:')
-    100*(ploss2-ploss1)/ploss1
+    Ploss_decrease = 100*(ploss1-ploss2)/ploss1
 end
 
 % Voltage stability index
@@ -94,16 +90,16 @@ end
 
 
 % ---------------------------------------------------------------------------------------------
-% % EXTRAS
-% % % FMINCON solved 
-% ObjectiveFunction = @objective;
-% LB = [2 2 2 0.1 0.1 0.1]; % Lower bound
-% UB = [15 15 15 1 1 1]; % Upper bound
-% % x0 = [5 2 5 0.1 0.1 0.1];
-% % x0 = [3	6 10 0.5 0.5 0.5];
-% % x0 = [5	10 15 0.5 0.3 0.1];
-% % x0 = [3 7 12 0.3 0.3 0.3];
-% x0 = [5 5 5 0.1 0.3 0.1];
-% [x,fval, exitflag, output] = fmincon(ObjectiveFunction,x0,[],[],[],[],LB,UB);
+% Plot voltage profiles
+plot(1:length(Vinit), Vinit);
+hold on;
+plot(1:length(Vout), Vout);
+ylabel('Voltage (pu)')
+xlabel('bus number')
+title('Voltage profile improvement over 3-phases')
+legend('Phase A - no DG','Phase B - no DG','Phase C - no DG','Phase A - optimised','Phase B - optimised','Phase C - optimised')
+legend('Phase A - no DG','Phase B - no DG','Phase C - no DG','Phase A - optimised','Phase B - optimised','Phase C - optimised','Location','southwestoutside')
+legend('Phase A - no DG','Phase B - no DG','Phase C - no DG','Phase A - optimised','Phase B - optimised','Phase C - optimised','Location','southeastoutside')
+
 
 
