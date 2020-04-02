@@ -977,6 +977,7 @@ object regulator_configuration {
 	Type B; // B or A? was A initially
 	tap_pos_A 7;
 	tap_pos_B 4;
+	tap_pos_C 6;
 	}
 
 object regulator {

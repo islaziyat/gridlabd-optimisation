@@ -30,6 +30,8 @@ else
         Vpu = ones(length(V),3);
         delta_V = abs(V-Vpu);
         y = sum(sum(delta_V));
+%         y = read_power_csv('underground_line_losses.csv');
+
     else % multi objective
         % Minimise voltage deviation
         Vpu = ones(length(V),3);

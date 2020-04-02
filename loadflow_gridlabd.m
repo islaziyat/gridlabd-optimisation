@@ -27,7 +27,7 @@ global complex_grid IEEE37
     variables_DG3 = strcat(' --define DG3_location=',num2str(ceil(x3)),' --define DG3_size=', num2str(x6*1000),sign3, num2str(x9*1000));
  
     if complex_grid == 1
-        file = ' IEEE37/IEEE37_real_no_regulator';
+        file = ' IEEE37/IEEE37_real_with_regulator';
     else
         file = ' IEEE37/IEEE37_symmetric_balanced';
     end

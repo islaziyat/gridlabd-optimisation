@@ -1,4 +1,5 @@
 clear all;
+close all;
 global complex_grid gridlabd IEEE37 multi
 
 IEEE37 = 1;
@@ -62,10 +63,10 @@ end
 % % Optimisation Outputs
 if gridlabd
     [Vinit,Imag,Psubstation,fail]  = loadflow_gridlabd(2,3,4,0,0,0,0,0,0);
-    ploss1 = read_power_csv('underground_line_losses.csv');
+    ploss1 = read_power_csv('underground_line_losses.csv')
 
     [Vout,Imag,Psubstation,fail] = loadflow_gridlabd(x(1),x(2),x(3),x(4),x(5),x(6),x(7),x(8),x(9));
-    ploss2 = read_power_csv('underground_line_losses.csv');
+    ploss2 = read_power_csv('underground_line_losses.csv')
 else
     [V,Psubstation,Y,fail, buses] = solve_loadflow(2,2,2,0,0,0,0,0,0);
     [Vout,Psubstation,Y,fail, buses] = solve_loadflow(x(1),x(2),x(3),x(4),x(5),x(6),x(7),x(8),x(9));

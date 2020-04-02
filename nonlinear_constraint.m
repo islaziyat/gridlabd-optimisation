@@ -26,7 +26,7 @@ V = [V(1:length(V),1); V(1:length(V),2); V(1:length(V),3)];
 % Current limits for IEEE37
     I = [I(1:length(I),1); I(1:length(I),2); I(1:length(I),3)];
     if IEEE37 == 1 
-        Imax = load('Imax_IEEE37.mat');
+        Imax = load('IEEE37/Imax_IEEE37.mat');
         Imax =  Imax.Imax_IEEE37;
         if complex_grid == 1
             Imax = [Imax; Imax; Imax];
