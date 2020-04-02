@@ -1,6 +1,6 @@
 %%insert the generators as negative loads
 function [Vmag,Imag,Psubstation,fail] = loadflow_gridlabd(x1, x2, x3, x4, x5, x6, x7, x8, x9)
-global complex_grid IEEE37
+global complex_grid IEEE37 regulator
     fail = 0;
     
     if IEEE37
@@ -27,7 +27,11 @@ global complex_grid IEEE37
     variables_DG3 = strcat(' --define DG3_location=',num2str(ceil(x3)),' --define DG3_size=', num2str(x6*1000),sign3, num2str(x9*1000));
  
     if complex_grid == 1
-        file = ' IEEE37/IEEE37_real_with_regulator';
+        if regulator
+            file = ' IEEE37/IEEE37_real_with_regulator';
+        else
+            file = ' IEEE37/IEEE37_real_no_regulator';
+        end
     else
         file = ' IEEE37/IEEE37_symmetric_balanced';
     end

@@ -1,5 +1,5 @@
 function y = objective(x)
-global gridlabd multi
+global gridlabd multi obj_deviation
 % x(1),x(2),x(3) is location of solar pv
 % x(4),x(5),x(6) is real power of solar pv in kW
 % x(7),x(8),x(9) is reactive power of solar pv in kW
@@ -12,10 +12,14 @@ if gridlabd == 0
         disp('Loadflow failed in MATLAB');
         return;
     end
-    Vpu = ones(length(V),1);
-    delta_V = abs(V-Vpu);
-    y = sum(delta_V);
-%     y = read_power_csv('underground_line_losses.csv');
+    
+    if obj_deviation
+        Vpu = ones(length(V),1);
+        delta_V = abs(V-Vpu);
+        y = sum(delta_V);
+    else
+        y = read_power_csv('underground_line_losses.csv');
+    end
     
 % ---------------------------------------------------------------------------------------------
 % % Using GridLAB-D
@@ -27,11 +31,14 @@ else
     end
     
     if multi == 0 % single objective
-        Vpu = ones(length(V),3);
-        delta_V = abs(V-Vpu);
-        y = sum(sum(delta_V));
-%         y = read_power_csv('underground_line_losses.csv');
-
+        if obj_deviation
+            Vpu = ones(length(V),3);
+            delta_V = abs(V-Vpu);
+            y = sum(sum(delta_V));
+        else
+            y = read_power_csv('underground_line_losses.csv');
+        end
+        
     else % multi objective
         % Minimise voltage deviation
         Vpu = ones(length(V),3);
