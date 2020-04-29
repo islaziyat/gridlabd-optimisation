@@ -1,6 +1,11 @@
+% Forward backward sweep or newton raphson for 3-phase detailed system
+% through gridlabd. 
+% See IEEE37_real_with_regulator.glm
+% IEEE37_real_no_regulator.glm
+
 %%insert the generators as negative loads
 function [Vmag,Imag,Psubstation,fail] = loadflow_gridlabd(x1, x2, x3, x4, x5, x6, x7, x8, x9)
-global complex_grid IEEE37 regulator
+global complex_grid IEEE37 regulator 
     fail = 0;
     
     if IEEE37
@@ -8,23 +13,31 @@ global complex_grid IEEE37 regulator
         lines = 36;
     end
     
-    %establish + or negative signs for gridlabd
-    sign1 = '+';
-    sign2 = '+';
-    sign3 = '+';
-    if x7 < 0 
-        sign1='';
-    end 
-    if x8 < 0 
-        sign2='';
-    end
-    if x9 < 0 
-        sign3='';
-    end
+    %establish phase connections - some parts of the grid are 1 or 2-phase
+    %laterals
+    DG1 = phase_connections(x1,x4,x7);
+    DG2 = phase_connections(x2,x5,x8);
+    DG3 = phase_connections(x3,x6,x9);
     
-    variables_DG1 = strcat(' --define DG1_location=',num2str(ceil(x1)),' --define DG1_size=', num2str(x4*1000),sign1, num2str(x7*1000));
-    variables_DG2 = strcat(' --define DG2_location=',num2str(ceil(x2)),' --define DG2_size=', num2str(x5*1000),sign2, num2str(x8*1000));
-    variables_DG3 = strcat(' --define DG3_location=',num2str(ceil(x3)),' --define DG3_size=', num2str(x6*1000),sign3, num2str(x9*1000));
+    %establish + or negative signs for gridlabd
+    [sign1A, sign1B, sign1C] = establish_sign(DG1);
+    [sign2A, sign2B, sign2C] = establish_sign(DG2);
+    [sign3A, sign3B, sign3C] = establish_sign(DG3);
+    
+    variables_DG1 = strcat(' --define DG1_location=',num2str(ceil(x1))...
+        ,' --define DG1_PhaseA=', num2str(DG1(1,1)),sign1A, num2str(DG1(1,2))...
+        ,' --define DG1_PhaseB=', num2str(DG1(2,1)),sign1B, num2str(DG1(2,2))...
+        ,' --define DG1_PhaseC=', num2str(DG1(3,1)),sign1C, num2str(DG1(3,2)));
+    
+    variables_DG2 = strcat(' --define DG2_location=',num2str(ceil(x2))...
+        ,' --define DG2_PhaseA=', num2str(DG2(1,1)),sign2A, num2str(DG2(1,2))...
+        ,' --define DG2_PhaseB=', num2str(DG2(2,1)),sign2B, num2str(DG2(2,2))...
+        ,' --define DG2_PhaseC=', num2str(DG2(3,1)),sign2C, num2str(DG2(3,2)));
+    
+    variables_DG3 = strcat(' --define DG3_location=',num2str(ceil(x3))...
+        ,' --define DG3_PhaseA=', num2str(DG3(1,1)),sign3A, num2str(DG3(1,2))...
+        ,' --define DG3_PhaseB=', num2str(DG3(2,1)),sign3B, num2str(DG3(2,2))...
+        ,' --define DG3_PhaseC=', num2str(DG3(3,1)),sign3C, num2str(DG3(3,2)));
  
     if complex_grid == 1
         if regulator
@@ -54,6 +67,7 @@ global complex_grid IEEE37 regulator
     % IMPORT DATA FROM SIMULATION
     [V, Vmag] = read_voltage_csv('output_voltage.csv');
     [I,Imag] = read_current_csv('output_current.csv');
+
     
     Vmag = Vmag(1:buses,:);
     V = V(1:buses,:);

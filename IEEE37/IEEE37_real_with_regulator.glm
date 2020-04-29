@@ -137,8 +137,11 @@ object line_configuration {
 	 spacing spacing_515;
 }
 
+
+
+//// create lineobjects: THE ORDER SHOULD NOT BE CHANGED - important in MATLAB for current constraints and phase connections
 //// create lineobjects:
-object underground_line {
+object underground_line { //to node 2
 	 phases "ABC";
 	 name node781-701;
 	 from node111;
@@ -147,7 +150,7 @@ object underground_line {
 	 configuration lc_7211;
 }
 
-object underground_line {
+object underground_line { //to node 3
 	 phases "ABC";
 	 name node701-702;
 	 from node2;
@@ -156,67 +159,13 @@ object underground_line {
 	 configuration lc_7221;
 }
 
-object underground_line {
+object underground_line { //to node 4
 	 phases "ABC";
 	 name node702-705;
 	 from node3;
 	 to node4;
 	 length 400;
 	 configuration lc_7241;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node702-713;
-	 from node3;
-	 to node7;
-	 length 360;
-	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node702-703;
-	 from node3;
-	 to node17;
-	 length 1320;
-	 configuration lc_7221;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node703-727;
-	 from node17;
-	 to node18;
-	 length 240;
-	 configuration lc_7241;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node703-730;
-	 from node17;
-	 to node22;
-	 length 600;
-	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node704-714;
-	 from node8;
-	 to node15;
-	 length 80;
-	 configuration lc_7241;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node704-720;
-	 from node8;
-	 to node9;
-	 length 800;
-	 configuration lc_7231;
 }
 
 object underground_line {
@@ -239,6 +188,42 @@ object underground_line {
 
 object underground_line {
 	 phases "ABC";
+	 name node702-713;
+	 from node3;
+	 to node7;
+	 length 360;
+	 configuration lc_7231;
+}
+
+object underground_line { //to node 8
+	 phases "ABC";
+	 name node713-704;
+	 from node7;
+	 to node8;
+	 length 520;
+	 configuration lc_7231;
+}
+
+object underground_line { //to node 9
+	 phases "ABC";
+	 name node704-720;
+	 from node8;
+	 to node9;
+	 length 800;
+	 configuration lc_7231;
+}
+
+object underground_line { //to node 10
+	 phases "ABC";
+	 name node720-706;
+	 from node9;
+	 to node10;
+	 length 600;
+	 configuration lc_7231;
+}
+
+object underground_line {
+	 phases "ABC";
 	 name node706-725;
 	 from node10;
 	 to node11;
@@ -248,12 +233,23 @@ object underground_line {
 
 object underground_line {
 	 phases "ABC";
+	 name node720-707;
+	 from node9;
+	 to node12;
+	 length 920;
+	 configuration lc_7241;
+}
+
+object underground_line { // to node 13
+	 phases "ABC";
 	 name node707-724;
 	 from node12;
 	 to node13;
 	 length 760;
 	 configuration lc_7241;
 }
+
+
 
 object underground_line {
 	 phases "ABC";
@@ -264,11 +260,114 @@ object underground_line {
 	 configuration lc_7241;
 }
 
+object underground_line { // to node15
+	 phases "ABC";
+	 name node704-714;
+	 from node8;
+	 to node15;
+	 length 80;
+	 configuration lc_7241;
+}
+
+
 object underground_line {
 	 phases "ABC";
-	 name node708-733;
-	 from node26;
-	 to node28;
+	 name node714-718;
+	 from node15;
+	 to node16;
+	 length 520;
+	 configuration lc_7241;
+}
+
+
+object underground_line {
+	 phases "ABC";
+	 name node702-703;
+	 from node3;
+	 to node17;
+	 length 1320;
+	 configuration lc_7221;
+}
+
+object underground_line { // to node 18
+	 phases "ABC";
+	 name node703-727;
+	 from node17;
+	 to node18;
+	 length 240;
+	 configuration lc_7241;
+}
+
+object underground_line {
+	 phases "ABC";
+	 name node727-744;
+	 from node18;
+	 to node19;
+	 length 280;
+	 configuration lc_7231;
+}
+
+
+object underground_line { //to node 20
+	 phases "ABC";
+	 name node744-729;
+	 from node19;
+	 to node20;
+	 length 280;
+	 configuration lc_7231;
+}
+
+object underground_line {
+	 phases "ABC";
+	 name node744-728;
+	 from node19;
+	 to node21;
+	 length 200;
+	 configuration lc_7241;
+}
+
+object underground_line {
+	 phases "ABC";
+	 name node703-730;
+	 from node17;
+	 to node22;
+	 length 600;
+	 configuration lc_7231;
+}
+
+
+object underground_line { // to node 23
+	 phases "ABC";
+	 name node730-709;
+	 from node22;
+	 to node23;
+	 length 200;
+	 configuration lc_7231;
+}
+
+object underground_line {
+	 phases "ABC";
+	 name node709-731;
+	 from node23;
+	 to node24;
+	 length 600;
+	 configuration lc_7231;
+}
+
+object underground_line {
+	 phases "ABC";
+	 name node709-775;
+	 from node23;
+	 to node25;
+	 length 520;
+	 configuration lc_7211;
+}
+
+object underground_line { // to node 26
+	 phases "ABC";
+	 name node709-708;
+	 from node23;
+	 to node26;
 	 length 320;
 	 configuration lc_7231;
 }
@@ -284,109 +383,10 @@ object underground_line {
 
 object underground_line {
 	 phases "ABC";
-	 name node709-731;
-	 from node23;
-	 to node24;
-	 length 600;
-	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node709-708;
-	 from node23;
-	 to node26;
+	 name node708-733;
+	 from node26;
+	 to node28;
 	 length 320;
-	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node710-735;
-	 from node30;
-	 to node32;
-	 length 200;
-	 configuration lc_7241;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node710-736;
-	 from node30;
-	 to node31;
-	 length 1280;
-	 configuration lc_7241;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node711-741;
-	 from node35;
-	 to node36;
-	 length 400;
-	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node711-740;
-	 from node35;
-	 to node37;
-	 length 200;
-	 configuration lc_7241;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node713-704;
-	 from node7;
-	 to node8;
-	 length 520;
-	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node714-718;
-	 from node15;
-	 to node16;
-	 length 520;
-	 configuration lc_7241;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node720-707;
-	 from node9;
-	 to node12;
-	 length 920;
-	 configuration lc_7241;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node720-706;
-	 from node9;
-	 to node10;
-	 length 600;
-	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node727-744;
-	 from node18;
-	 to node19;
-	 length 280;
-	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node730-709;
-	 from node22;
-	 to node23;
-	 length 200;
 	 configuration lc_7231;
 }
 
@@ -401,12 +401,31 @@ object underground_line {
 
 object underground_line {
 	 phases "ABC";
-	 name node744-729;
-	 from node19;
-	 to node20;
-	 length 280;
-	 configuration lc_7231;
+	 name node734-710;
+	 from node29;
+	 to node30;
+	 length 520;
+	 configuration lc_7241;
 }
+
+object underground_line {
+	 phases "ABC";
+	 name node710-736;
+	 from node30;
+	 to node31;
+	 length 1280;
+	 configuration lc_7241;
+}
+
+object underground_line {
+	 phases "ABC";
+	 name node710-735;
+	 from node30;
+	 to node32;
+	 length 200;
+	 configuration lc_7241;
+}
+
 
 object underground_line {
 	 phases "ABC";
@@ -415,15 +434,6 @@ object underground_line {
 	 to node33;
 	 length 640;
 	 configuration lc_7231;
-}
-
-object underground_line {
-	 phases "ABC";
-	 name node734-710;
-	 from node29;
-	 to node30;
-	 length 520;
-	 configuration lc_7241;
 }
 
 object underground_line {
@@ -446,23 +456,21 @@ object underground_line {
 
 object underground_line {
 	 phases "ABC";
-	 name node744-728;
-	 from node19;
-	 to node21;
-	 length 200;
-	 configuration lc_7241;
+	 name node711-741;
+	 from node35;
+	 to node36;
+	 length 400;
+	 configuration lc_7231;
 }
 
 object underground_line {
 	 phases "ABC";
-	 name node709-775;
-	 from node23;
-	 to node25;
-	 length 520;
-	 configuration lc_7211;
+	 name node711-740;
+	 from node35;
+	 to node37;
+	 length 200;
+	 configuration lc_7241;
 }
-
-
 
 //END of line
 
@@ -993,9 +1001,9 @@ object load {
 	 phases "ABCD";
 	 parent node${DG1_location};
 	 name DG1;
- 	 constant_power_A -${DG1_size}j;
-	 constant_power_B -${DG1_size}j;
-	 constant_power_C -${DG1_size}j;
+ 	 constant_power_A -${DG1_PhaseA}j;
+	 constant_power_B -${DG1_PhaseB}j;
+	 constant_power_C -${DG1_PhaseC}j;
 	 nominal_voltage 4800;
 }
 
@@ -1003,9 +1011,9 @@ object load {
 	 phases "ABCD";
 	 parent node${DG2_location};
 	 name DG2;
- 	 constant_power_A -${DG2_size}j;
-	 constant_power_B -${DG2_size}j;
-	 constant_power_C -${DG2_size}j;
+ 	 constant_power_A -${DG2_PhaseA}j;
+	 constant_power_B -${DG2_PhaseB}j;
+	 constant_power_C -${DG2_PhaseC}j;
 	 nominal_voltage 4800;
 }
 
@@ -1013,9 +1021,9 @@ object load {
 	 phases "ABCD";
 	 parent node${DG3_location};
 	 name DG3;
- 	 constant_power_A -${DG3_size}j;
-	 constant_power_B -${DG3_size}j;
-	 constant_power_C -${DG3_size}j;
+ 	 constant_power_A -${DG3_PhaseA}j;
+	 constant_power_B -${DG3_PhaseB}j;
+	 constant_power_C -${DG3_PhaseC}j;
 	 nominal_voltage 4800;
 }
 

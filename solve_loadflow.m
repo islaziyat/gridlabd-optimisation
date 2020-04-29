@@ -1,3 +1,5 @@
+% Newton Raphson one-line diagram
+
 % Load are entered positive (kW)
 % Generations are entered negative (kVAR)
 % Line impedance entered in Ohm (converted to pu in code)
