@@ -68,7 +68,7 @@ global complex_grid IEEE37 regulator
     [V, Vmag] = read_voltage_csv('output_voltage.csv');
     [I,Imag] = read_current_csv('output_current.csv');
 
-    
+    Vang = angle(V)*180/pi;
     Vmag = Vmag(1:buses,:);
     V = V(1:buses,:);
     Imag = Imag(1:lines,:);

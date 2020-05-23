@@ -106,7 +106,8 @@ if usega
         [x,fval, exitflag, output] = ga(ObjectiveFunction,nvars,[],[],[],[],LB,UB,@nonlinear_constraint,IntCon,options);
     else %multiple objectives
         options = optimoptions('gamultiobj');
-        options.MaxGenerations = 40;
+        options.MaxGenerations = 100;
+        options.PopulationSize = 200;
         options.PlotFcn = @gaplotpareto;
         [x,fval, exitflag, output] = gamultiobj(ObjectiveFunction,nvars,[],[],[],[],LB,UB,@nonlinear_constraint,options);
     end
@@ -118,12 +119,12 @@ else
     [x,fval,exitflag,output] = particleswarm(ObjectiveFunction,nvars,LB,UB,options);
 end
 %record time of simulation
-toc
+t = toc
 
 % ---------------------------------------------------------------------------------------------
 % % Optimisation Outputs
 if multi == 0
-    measure_performance(x)
+    measure_performance(x);
 %     res = [x y2 Ploss_decrease];
 end
 
