@@ -1,5 +1,13 @@
 README
 
+This software links Matlab to GridLAB-D in order to find the optimal locations and sizes for distributed generation in the IEEE37 grid. 
+
+Run through run_dg_optimisation.m
+
+Requirements:
+- MATLAB
+- GridLAB-D
+
 This simulation code is compatible with MAC and WINDOWS OS. 
 
 Warnings:
