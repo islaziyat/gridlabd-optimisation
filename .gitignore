@@ -1,0 +1,14 @@
+Data/
+IEEE37/37original.glm
+IEEE37/IEEE37_real_no_regulator_imp.glm
+IEEE37/IEEE37_real_with_regulator_imp.glm
+create_result_table.m
+gridlabd.xml
+impedance.csv
+measure_performance.asv
+output_current.csv
+output_voltage.csv
+phase_connection_37.mat
+plot_pv_curve.m
+underground_line_losses.csv
+voltage_areas_plot.m
