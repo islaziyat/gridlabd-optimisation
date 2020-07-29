@@ -974,7 +974,7 @@ object voltdump {
        }
 
 object currdump {
-filename output_current.csv;
+		filename output_current.csv;
 }
 
 object impedance_dump {
@@ -987,7 +987,7 @@ object collector {
 	interval 1;
 	file underground_line_losses.csv;
 }
-	
+
 
 
 

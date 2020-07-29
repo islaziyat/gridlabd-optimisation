@@ -92,7 +92,7 @@ establish_phase_connections();
 ObjectiveFunction = @objective;
 nvars = 9; % Number of variables
 LB = [2 2 2 0 0 0 -500 -500 -500]; % Lower bound
-UB = [36 36 36 1000 1000 1000 500 500 500]; % Upper bound
+UB = [37 37 37 1000 1000 1000 500 500 500]; % Upper bound
 
 % % GA solved
 IntCon = [1 2 3];

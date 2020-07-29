@@ -5,12 +5,19 @@
 
 %%insert the generators as negative loads
 function [Vmag,Imag,Psubstation,fail] = loadflow_gridlabd(x1, x2, x3, x4, x5, x6, x7, x8, x9)
-global complex_grid IEEE37 regulator 
+global complex_grid IEEE37 regulator surrey
     fail = 0;
     
     if IEEE37
         buses = 37;
         lines = 36;
+        file = ' IEEE37/IEEE37_real_no_regulator';
+    end
+    
+    if surrey
+        buses = 19;
+        lines = 18;
+        file = ' Surrey/surreycommercial';
     end
     
     %establish phase connections - some parts of the grid are 1 or 2-phase
@@ -38,21 +45,11 @@ global complex_grid IEEE37 regulator
         ,' --define DG3_PhaseA=', num2str(DG3(1,1)),sign3A, num2str(DG3(1,2))...
         ,' --define DG3_PhaseB=', num2str(DG3(2,1)),sign3B, num2str(DG3(2,2))...
         ,' --define DG3_PhaseC=', num2str(DG3(3,1)),sign3C, num2str(DG3(3,2)));
- 
-    if complex_grid == 1
-        if regulator
-            file = ' IEEE37/IEEE37_real_with_regulator';
-        else
-            file = ' IEEE37/IEEE37_real_no_regulator';
-        end
-    else
-        file = ' IEEE37/IEEE37_symmetric_balanced';
-    end
- 
+    
     if ismac % for Mac OS
         s = strcat('/usr/local/bin/gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
     elseif ispc % for Windows 
-        s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
+        s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file)
     end
     
     [status,cmdout] = system(s);
@@ -71,6 +68,7 @@ global complex_grid IEEE37 regulator
     Vang = angle(V)*180/pi;
     Vmag = Vmag(1:buses,:);
     V = V(1:buses,:);
+    Imag
     Imag = Imag(1:lines,:);
 
     % Power at slack bus/substation
