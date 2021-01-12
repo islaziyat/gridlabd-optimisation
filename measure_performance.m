@@ -1,5 +1,5 @@
 function measure_performance(x)
-    close;
+%     close;
     set_globals;
     establish_phase_connections();
 
@@ -17,7 +17,8 @@ function measure_performance(x)
         ploss2 = ploss2 + ploss21;
     end
     
-    Vout
+    V_data = [Vinit Vout]
+    save V_data
     
     Imag
     
@@ -47,7 +48,7 @@ function measure_performance(x)
     % Voltage stability index
 
     % ---------------------------------------------------------------------------------------------
-%     Plot voltage profiles
+% %     Plot voltage profiles
     set(gcf, 'Position',  [400, 400, 700, 400])
     plot(1:length(Vinit), Vinit(:,:),'Color' , 'b');
     hold on;
@@ -62,7 +63,7 @@ function measure_performance(x)
 %     set(gcf, 'Position',  [400, 50, 900, 900])
 %     subplot(3,1,1);
 %     plot(1:length(Vout), Vout(:,1));
-% %     yline(1);
+%     yline(1);
 %     ylabel('Voltage A (pu)')
 %     xlabel('bus number')
 %     title('Voltage profiles (A, B and C) for different objectives')
@@ -70,17 +71,17 @@ function measure_performance(x)
 %     
 %     subplot(3,1,2);
 %     plot(1:length(Vout), Vout(:,2));
-% %     yline(1);
+%     yline(1);
 %     ylabel('Voltage B (pu)')
 %     xlabel('bus number')
 %     hold on
 %     
 %     subplot(3,1,3);
 %     plot(1:length(Vout), Vout(:,3));
-% %     yline(1);
+%     yline(1);
 %     ylabel('Voltage C (pu)')
 %     xlabel('bus number')
-    
+%     
 
 %     [c, ceq] = nonlinear_constraint(x);
 %     if max(c) > 0

@@ -11,7 +11,10 @@ global complex_grid IEEE37 regulator surrey
     if IEEE37
         buses = 37;
         lines = 36;
-        file = ' IEEE37/IEEE37_real_no_regulator';
+        if regulator
+            file = ' IEEE37/IEEE37_real_with_regulator';
+        else
+            file = ' IEEE37/IEEE37_real_no_regulator';
     end
     
     if surrey
@@ -49,7 +52,7 @@ global complex_grid IEEE37 regulator surrey
     if ismac % for Mac OS
         s = strcat('/usr/local/bin/gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
     elseif ispc % for Windows 
-        s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file)
+        s = strcat('set path=%path:C:\Program Files\MATLAB\R2020a\bin\win64;=% & gridlabd',variables_DG1,variables_DG2,variables_DG3, file);
     end
     
     [status,cmdout] = system(s);
@@ -68,7 +71,6 @@ global complex_grid IEEE37 regulator surrey
     Vang = angle(V)*180/pi;
     Vmag = Vmag(1:buses,:);
     V = V(1:buses,:);
-    Imag
     Imag = Imag(1:lines,:);
 
     % Power at slack bus/substation

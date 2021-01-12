@@ -1,11 +1,11 @@
 function [V, VPU] = read_voltage_csv(voltage_file)
 global surrey IEEE37
     if surrey
-        Vbase = 25000
+        Vbase = 25000;
     end
     
     if IEEE37
-        Vbase = 4800
+        Vbase = 4800;
     end
     
     m = csvread(voltage_file,2,1);
