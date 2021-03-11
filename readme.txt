@@ -18,3 +18,7 @@ gridlabd files
 - The underground/overhead lines should be ordered such that the "to nodes" are order in numerical order (e.g first line should be 
 (from node1 to node2, from nodex to node3 and so on). This matters when it comes to establishing phase connections in the matlab code.
 
+To preview the animations go to:
+https://htmlpreview.github.io/ and input the link from the html
+Or download the code and click the html file from your files
+
